@@ -1,0 +1,401 @@
+openapi: 3.1.0
+info:
+  title: Todo List Manager API
+  version: 1.0.0
+  description: |
+    REST API specification for the Todo List Manager application.
+    
+    This contract defines the API endpoints for CRUD operations on todo items.
+    The MVP uses localStorage with MSW mocking these endpoints. Future implementation
+    will replace mocks with actual Next.js API routes backed by a database.
+    
+    **Base URL**: `http://localhost:3000/api` (development)
+    
+    **Authentication**: None (MVP), Bearer token in future multi-user version
+    
+  contact:
+    name: API Support
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+  - url: https://api.todo-app.example.com/api
+    description: Production server (future)
+
+tags:
+  - name: todos
+    description: Todo item operations (CRUD)
+
+paths:
+  /todos:
+    get:
+      summary: List all todos
+      description: |
+        Retrieves all todo items, optionally filtered by completion status or search query.
+        Results are sorted by creation date (newest first) by default.
+      operationId: listTodos
+      tags:
+        - todos
+      parameters:
+        - name: completed
+          in: query
+          description: Filter by completion status
+          required: false
+          schema:
+            type: boolean
+          example: false
+        - name: search
+          in: query
+          description: Search in title and description (case-insensitive)
+          required: false
+          schema:
+            type: string
+            minLength: 1
+          example: "groceries"
+      responses:
+        '200':
+          description: List of todos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+              examples:
+                allTodos:
+                  summary: All todos
+                  value:
+                    - id: "550e8400-e29b-41d4-a716-446655440000"
+                      title: "Buy groceries"
+                      description: "Milk, eggs, bread"
+                      completed: false
+                      createdAt: "2026-02-01T09:00:00.000Z"
+                      updatedAt: "2026-02-01T09:00:00.000Z"
+                    - id: "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+                      title: "Call dentist"
+                      description: ""
+                      completed: true
+                      createdAt: "2026-02-01T08:30:00.000Z"
+                      updatedAt: "2026-02-01T10:15:00.000Z"
+                emptyList:
+                  summary: No todos
+                  value: []
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      summary: Create a new todo
+      description: |
+        Creates a new todo item with the provided title and optional description.
+        The system auto-generates ID, timestamps, and sets completed to false.
+      operationId: createTodo
+      tags:
+        - todos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTodoInput'
+            examples:
+              withDescription:
+                summary: Todo with description
+                value:
+                  title: "Complete project proposal"
+                  description: "Include budget and timeline"
+              withoutDescription:
+                summary: Todo without description
+                value:
+                  title: "Buy milk"
+      responses:
+        '201':
+          description: Todo created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+              example:
+                id: "550e8400-e29b-41d4-a716-446655440000"
+                title: "Complete project proposal"
+                description: "Include budget and timeline"
+                completed: false
+                createdAt: "2026-02-01T09:00:00.000Z"
+                updatedAt: "2026-02-01T09:00:00.000Z"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /todos/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: Todo item ID (UUID)
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: "550e8400-e29b-41d4-a716-446655440000"
+
+    get:
+      summary: Get a todo by ID
+      description: Retrieves a single todo item by its unique identifier
+      operationId: getTodoById
+      tags:
+        - todos
+      responses:
+        '200':
+          description: Todo found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+              example:
+                id: "550e8400-e29b-41d4-a716-446655440000"
+                title: "Buy groceries"
+                description: "Milk, eggs, bread"
+                completed: false
+                createdAt: "2026-02-01T09:00:00.000Z"
+                updatedAt: "2026-02-01T09:00:00.000Z"
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      summary: Update a todo
+      description: |
+        Updates an existing todo item. All fields are optional, but at least
+        one field must be provided. The updatedAt timestamp is automatically updated.
+      operationId: updateTodo
+      tags:
+        - todos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTodoInput'
+            examples:
+              updateTitle:
+                summary: Update title only
+                value:
+                  title: "Buy groceries and toiletries"
+              markComplete:
+                summary: Mark as complete
+                value:
+                  completed: true
+              updateMultiple:
+                summary: Update multiple fields
+                value:
+                  title: "Buy groceries"
+                  description: "Milk, eggs, bread, butter"
+                  completed: false
+      responses:
+        '200':
+          description: Todo updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+              example:
+                id: "550e8400-e29b-41d4-a716-446655440000"
+                title: "Buy groceries and toiletries"
+                description: "Milk, eggs, bread"
+                completed: false
+                createdAt: "2026-02-01T09:00:00.000Z"
+                updatedAt: "2026-02-01T11:30:00.000Z"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      summary: Delete a todo
+      description: Permanently removes a todo item from the system
+      operationId: deleteTodo
+      tags:
+        - todos
+      responses:
+        '204':
+          description: Todo deleted successfully (no content)
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    Todo:
+      type: object
+      description: Complete todo item with all fields
+      required:
+        - id
+        - title
+        - completed
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier (auto-generated)
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Short description of the task
+          example: "Buy groceries"
+        description:
+          type: string
+          maxLength: 1000
+          description: Optional detailed description
+          example: "Milk, eggs, bread, butter"
+          default: ""
+        completed:
+          type: boolean
+          description: Completion status (done/not done)
+          example: false
+          default: false
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when item was created (ISO 8601)
+          example: "2026-02-01T09:00:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp of last modification (ISO 8601)
+          example: "2026-02-01T09:00:00.000Z"
+
+    CreateTodoInput:
+      type: object
+      description: Input for creating a new todo
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Short description of the task
+          example: "Buy groceries"
+        description:
+          type: string
+          maxLength: 1000
+          description: Optional detailed description
+          example: "Milk, eggs, bread"
+
+    UpdateTodoInput:
+      type: object
+      description: Input for updating an existing todo (all fields optional)
+      minProperties: 1
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Short description of the task
+          example: "Buy groceries"
+        description:
+          type: string
+          maxLength: 1000
+          description: Optional detailed description
+          example: "Milk, eggs, bread, butter"
+        completed:
+          type: boolean
+          description: Completion status
+          example: true
+
+    Error:
+      type: object
+      description: Standard error response
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error type/code
+          example: "ValidationError"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Title is required"
+        details:
+          type: object
+          description: Additional error details (optional)
+          additionalProperties: true
+          example:
+            field: "title"
+            constraint: "minLength"
+
+  responses:
+    BadRequest:
+      description: Invalid request (validation error)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            emptyTitle:
+              summary: Empty title
+              value:
+                error: "ValidationError"
+                message: "Title is required"
+                details:
+                  field: "title"
+                  constraint: "minLength"
+            titleTooLong:
+              summary: Title too long
+              value:
+                error: "ValidationError"
+                message: "Title must be 200 characters or less"
+                details:
+                  field: "title"
+                  constraint: "maxLength"
+            noUpdateFields:
+              summary: No fields to update
+              value:
+                error: "ValidationError"
+                message: "At least one field must be provided for update"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "NotFoundError"
+            message: "Todo not found: 550e8400-e29b-41d4-a716-446655440000"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "InternalServerError"
+            message: "An unexpected error occurred"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT token authentication (future implementation).
+        Not used in MVP (localStorage-based).
+
+# Future: Add security requirement when implementing authentication
+# security:
+#   - bearerAuth: []
