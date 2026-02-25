@@ -79,22 +79,22 @@ This is a Next.js web application with the following structure:
 
 ### Implementation for User Story 1
 
-- [ ] T025 [P] [US1] Create TanStack Query hooks in lib/hooks/use-todos.ts (useTodos, useTodo, useCreateTodo)
-- [ ] T026 [P] [US1] Implement MSW GET /api/todos handler in mocks/handlers.ts (list todos with filters)
-- [ ] T027 [P] [US1] Implement MSW POST /api/todos handler in mocks/handlers.ts (create todo with validation)
-- [ ] T028 [P] [US1] Implement MSW GET /api/todos/:id handler in mocks/handlers.ts (get single todo)
-- [ ] T029 [P] [US1] Create TodoItem component in components/todo-item.tsx (display single todo with title and status)
-- [ ] T030 [P] [US1] Create TodoList component in components/todo-list.tsx (render list of TodoItems)
-- [ ] T031 [P] [US1] Create EmptyState component in components/empty-state.tsx (display when no todos exist)
-- [ ] T032 [US1] Create TanStack Form integration hook in lib/hooks/use-todo-form.ts (form state management)
-- [ ] T033 [US1] Create TodoForm component in components/todo-form.tsx (title and description inputs with validation)
-- [ ] T034 [US1] Implement home page in app/page.tsx (display TodoList, handle empty state, show "Add Todo" button)
-- [ ] T035 [US1] Implement new todo page in app/todos/new/page.tsx (TodoForm with create mutation)
-- [ ] T036 [US1] Implement todo detail page in app/todos/[id]/page.tsx (display full todo details)
-- [ ] T037 [US1] Add navigation between list and detail views (Link components)
-- [ ] T038 [US1] Add loading states for data fetching (Suspense boundaries or loading.tsx files)
-- [ ] T039 [US1] Add error handling and error boundaries (error.tsx files)
-- [ ] T040 [US1] Style components with Tailwind CSS (responsive, mobile-first design)
+- [x] T025 [P] [US1] Create TanStack Query hooks in lib/hooks/use-todos.ts (useTodos, useTodo, useCreateTodo)
+- [x] T026 [P] [US1] Implement MSW GET /api/todos handler in mocks/handlers.ts (list todos with filters)
+- [x] T027 [P] [US1] Implement MSW POST /api/todos handler in mocks/handlers.ts (create todo with validation)
+- [x] T028 [P] [US1] Implement MSW GET /api/todos/:id handler in mocks/handlers.ts (get single todo)
+- [x] T029 [P] [US1] Create TodoItem component in components/todo-item.tsx (display single todo with title and status)
+- [x] T030 [P] [US1] Create TodoList component in components/todo-list.tsx (render list of TodoItems)
+- [x] T031 [P] [US1] Create EmptyState component in components/empty-state.tsx (display when no todos exist)
+- [x] T032 [US1] Create TanStack Form integration hook in lib/hooks/use-todo-form.ts (form state management)
+- [x] T033 [US1] Create TodoForm component in components/todo-form.tsx (title and description inputs with validation)
+- [x] T034 [US1] Implement home page in app/page.tsx (display TodoList, handle empty state, show "Add Todo" button)
+- [x] T035 [US1] Implement new todo page in app/todos/new/page.tsx (TodoForm with create mutation)
+- [x] T036 [US1] Implement todo detail page in app/todos/[id]/page.tsx (display full todo details)
+- [x] T037 [US1] Add navigation between list and detail views (Link components)
+- [x] T038 [US1] Add loading states for data fetching (Suspense boundaries or loading.tsx files)
+- [x] T039 [US1] Add error handling and error boundaries (error.tsx files)
+- [x] T040 [US1] Style components with Tailwind CSS (responsive, mobile-first design)
 
 **Checkpoint**: At this point, User Story 1 should be fully functional. Users can create todos, view the list, and see todo details. This is the MVP!
 
@@ -108,14 +108,14 @@ This is a Next.js web application with the following structure:
 
 ### Implementation for User Story 2
 
-- [ ] T041 [P] [US2] Add useUpdateTodo mutation hook to lib/hooks/use-todos.ts (optimistic update support)
-- [ ] T042 [P] [US2] Implement MSW PUT /api/todos/:id handler in mocks/handlers.ts (update todo fields)
-- [ ] T043 [US2] Add completion checkbox to TodoItem component in components/todo-item.tsx (with toggle handler)
-- [ ] T044 [US2] Add visual styling for completed items in components/todo-item.tsx (strikethrough, opacity, color)
-- [ ] T045 [US2] Implement optimistic updates in useUpdateTodo mutation (instant UI feedback)
-- [ ] T046 [US2] Add completion status toggle in todo detail page app/todos/[id]/page.tsx
-- [ ] T047 [US2] Add filter UI in app/page.tsx (show all/active/completed todos)
-- [ ] T048 [US2] Update useTodos hook to support completion filter query parameter
+- [x] T041 [P] [US2] Add useUpdateTodo mutation hook to lib/hooks/use-todos.ts (optimistic update support)
+- [x] T042 [P] [US2] Implement MSW PUT /api/todos/:id handler in mocks/handlers.ts (update todo fields)
+- [x] T043 [US2] Add completion checkbox to TodoItem component in components/todo-item.tsx (with toggle handler)
+- [x] T044 [US2] Add visual styling for completed items in components/todo-item.tsx (strikethrough, opacity, color)
+- [x] T045 [US2] Implement optimistic updates in useUpdateTodo mutation (instant UI feedback)
+- [x] T046 [US2] Add completion status toggle in todo detail page app/todos/[id]/page.tsx
+- [x] T047 [US2] Add filter UI in app/page.tsx (show all/active/completed todos)
+- [x] T048 [US2] Update useTodos hook to support completion filter query parameter
 
 **Checkpoint**: At this point, User Stories 1 AND 2 work independently. Users can create, view, and mark todos as complete.
 
@@ -129,14 +129,14 @@ This is a Next.js web application with the following structure:
 
 ### Implementation for User Story 3
 
-- [ ] T049 [P] [US3] Create edit todo page in app/todos/[id]/edit/page.tsx (TodoForm pre-filled with existing data)
-- [ ] T050 [US3] Add edit mode state management to TodoForm component in components/todo-form.tsx
-- [ ] T051 [US3] Update TodoForm to handle both create and update modes (conditional submission)
-- [ ] T052 [US3] Add "Edit" button to todo detail page in app/todos/[id]/page.tsx
-- [ ] T053 [US3] Add "Cancel" button to TodoForm with navigation back to detail page
-- [ ] T054 [US3] Implement form validation for edit mode (same rules as create)
-- [ ] T055 [US3] Add success toast/notification after successful edit (optional but recommended)
-- [ ] T056 [US3] Handle edit errors gracefully (display validation errors inline)
+- [x] T049 [P] [US3] Create edit todo page in app/todos/[id]/edit/page.tsx (TodoForm pre-filled with existing data)
+- [x] T050 [US3] Add edit mode state management to TodoForm component in components/todo-form.tsx
+- [x] T051 [US3] Update TodoForm to handle both create and update modes (conditional submission)
+- [x] T052 [US3] Add "Edit" button to todo detail page in app/todos/[id]/page.tsx
+- [x] T053 [US3] Add "Cancel" button to TodoForm with navigation back to detail page
+- [x] T054 [US3] Implement form validation for edit mode (same rules as create)
+- [x] T055 [US3] Add success toast/notification after successful edit (optional but recommended)
+- [x] T056 [US3] Handle edit errors gracefully (display validation errors inline)
 
 **Checkpoint**: At this point, User Stories 1, 2, AND 3 work independently. Users can create, view, mark complete, and edit todos.
 
@@ -150,15 +150,15 @@ This is a Next.js web application with the following structure:
 
 ### Implementation for User Story 4
 
-- [ ] T057 [P] [US4] Add useDeleteTodo mutation hook to lib/hooks/use-todos.ts (with cache invalidation)
-- [ ] T058 [P] [US4] Implement MSW DELETE /api/todos/:id handler in mocks/handlers.ts (remove todo)
-- [ ] T059 [P] [US4] Install shadcn/ui alert-dialog component (npx shadcn-ui@latest add alert-dialog)
-- [ ] T060 [US4] Create DeleteConfirmation dialog component in components/delete-confirmation.tsx
-- [ ] T061 [US4] Add "Delete" button to TodoItem component in components/todo-item.tsx (opens dialog)
-- [ ] T062 [US4] Add "Delete" button to todo detail page in app/todos/[id]/page.tsx (opens dialog)
-- [ ] T063 [US4] Implement delete confirmation flow with cancel option in DeleteConfirmation component
-- [ ] T064 [US4] Handle successful deletion (navigate back to home page after delete)
-- [ ] T065 [US4] Add optimistic deletion update (remove from UI immediately)
+- [x] T057 [P] [US4] Add useDeleteTodo mutation hook to lib/hooks/use-todos.ts (with cache invalidation)
+- [x] T058 [P] [US4] Implement MSW DELETE /api/todos/:id handler in mocks/handlers.ts (remove todo)
+- [x] T059 [P] [US4] Install shadcn/ui alert-dialog component (npx shadcn-ui@latest add alert-dialog)
+- [x] T060 [US4] Create DeleteConfirmation dialog component in components/delete-confirmation.tsx
+- [x] T061 [US4] Add "Delete" button to TodoItem component in components/todo-item.tsx (opens dialog)
+- [x] T062 [US4] Add "Delete" button to todo detail page in app/todos/[id]/page.tsx (opens dialog)
+- [x] T063 [US4] Implement delete confirmation flow with cancel option in DeleteConfirmation component
+- [x] T064 [US4] Handle successful deletion (navigate back to home page after delete)
+- [x] T065 [US4] Add optimistic deletion update (remove from UI immediately)
 
 **Checkpoint**: All user stories should now be independently functional. Full CRUD operations available.
 
